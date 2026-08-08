@@ -5,7 +5,6 @@ import android.os.Environment
 import java.io.File
 
 object OperitPaths {
-
     private const val OPERIT_DIR_NAME = "Operit"
     private const val CLEAN_ON_EXIT_DIR_NAME = "cleanOnExit"
     private const val PLUGINS_DIR_NAME = "plugins"
@@ -16,20 +15,26 @@ object OperitPaths {
     private const val TEST_DIR_NAME = "test"
     private const val WEBSESSION_DIR_NAME = "websession"
     private const val USERSCRIPTS_DIR_NAME = "userscripts"
-
     const val SHERPA_NCNN_MODELS_DIR_NAME = ".sherpa_ncnn_models"
     const val VECTOR_INDEX_DIR_NAME = ".vector_index"
-
     const val IMAGE_POOL_DIR_NAME = "image_pool"
     const val MEDIA_POOL_DIR_NAME = "media_pool"
     const val SKILL_REPO_ZIP_POOL_DIR_NAME = "skill_repo_zip_pool"
 
+    /**
+     * 新基础目录：/storage/emulated/0/Android/media/com.ai.assistance.operit
+     * 替代原 Environment.DIRECTORY_DOWNLOADS/Operit
+     */
+    private fun baseDir(): File {
+        return File("/storage/emulated/0/Android/media/com.ai.assistance.operit")
+    }
+
     fun downloadsDir(): File {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        return baseDir()
     }
 
     fun operitRootDir(): File {
-        return ensureDir(File(downloadsDir(), OPERIT_DIR_NAME))
+        return ensureDir(baseDir())
     }
 
     fun cleanOnExitDir(): File {
@@ -118,37 +123,24 @@ object OperitPaths {
         )
     }
 
-    fun operitRootPathSdcard(): String {
-        return "/sdcard/Download/$OPERIT_DIR_NAME"
-    }
+    // ===== 给 JS/WebView/原生桥接用的字符串路径（不带尾斜杠）=====
+    private const val BASE_PATH_SDCARD = "/storage/emulated/0/Android/media/com.ai.assistance.operit"
 
-    fun cleanOnExitPathSdcard(): String {
-        return "${operitRootPathSdcard()}/$CLEAN_ON_EXIT_DIR_NAME"
-    }
+    fun operitRootPathSdcard(): String = BASE_PATH_SDCARD
 
-    fun pluginsPathSdcard(): String {
-        return "${operitRootPathSdcard()}/$PLUGINS_DIR_NAME"
-    }
+    fun cleanOnExitPathSdcard(): String = "$BASE_PATH_SDCARD/$CLEAN_ON_EXIT_DIR_NAME"
 
-    fun bridgePathSdcard(): String {
-        return "${operitRootPathSdcard()}/$BRIDGE_DIR_NAME"
-    }
+    fun pluginsPathSdcard(): String = "$BASE_PATH_SDCARD/$PLUGINS_DIR_NAME"
 
-    fun exportsPathSdcard(): String {
-        return "${operitRootPathSdcard()}/$EXPORTS_DIR_NAME"
-    }
+    fun bridgePathSdcard(): String = "$BASE_PATH_SDCARD/$BRIDGE_DIR_NAME"
 
-    fun workspacePathSdcard(chatId: String): String {
-        return "${operitRootPathSdcard()}/$WORKSPACE_DIR_NAME/$chatId"
-    }
+    fun exportsPathSdcard(): String = "$BASE_PATH_SDCARD/$EXPORTS_DIR_NAME"
 
-    fun testPathSdcard(): String {
-        return "${operitRootPathSdcard()}/$TEST_DIR_NAME"
-    }
+    fun workspacePathSdcard(chatId: String): String = "$BASE_PATH_SDCARD/$WORKSPACE_DIR_NAME/$chatId"
 
-    fun webSessionUserscriptsPathSdcard(): String {
-        return "${operitRootPathSdcard()}/$WEBSESSION_DIR_NAME/$USERSCRIPTS_DIR_NAME"
-    }
+    fun testPathSdcard(): String = "$BASE_PATH_SDCARD/$TEST_DIR_NAME"
+
+    fun webSessionUserscriptsPathSdcard(): String = "$BASE_PATH_SDCARD/$WEBSESSION_DIR_NAME/$USERSCRIPTS_DIR_NAME"
 
     private fun ensureDir(dir: File): File {
         if (!dir.exists()) {

@@ -142,7 +142,7 @@ const DOWNLOADS = [
   })
 );
 
-const rootDir = '/sdcard/Download/Operit/js_test_download_stress_' + Date.now();
+const rootDir = '/storage/emulated/0/Android/media/com.ai.assistance.operit/js_test_download_stress_' + Date.now();
 ensureDir(rootDir);
 
 const startedAt = Date.now();

@@ -160,7 +160,7 @@ async function runParallelRawAsync(cases) {
   };
 }
 
-const rootDir = '/sdcard/Download/Operit/js_test_download_probe_' + Date.now();
+const rootDir = '/storage/emulated/0/Android/media/com.ai.assistance.operit/js_test_download_probe_' + Date.now();
 ensureDir(rootDir);
 
 const successCases = [
